@@ -18,5 +18,5 @@ This project is a **Streamlit dashboard** for analyzing Netflix's global content
 
 ### 1. Clone this Repository or Download the Files
 ```bash
-git clone https://github.com/your-username/netflix-dashboard.git
+git clone https://github.com/Bineet-48/netflix-dashboard.git
 cd netflix-dashboard
