@@ -25,9 +25,9 @@ df = load_data()
 
 # Sidebar filters
 st.sidebar.header("🔎 Filter Data")
-year_filter = st.sidebar.multiselect("📅 Select Year(s) Added", sorted(df['year_added'].dropna().unique()), default=None)
-genre_filter = st.sidebar.multiselect("🎭 Select Genre(s)", sorted(set(', '.join(df['listed_in']).split(', '))), default=None)
-country_filter = st.sidebar.multiselect("🌍 Select Country(ies)", sorted(set(', '.join(df['country']).split(', '))), default=None)
+year_filter = st.sidebar.multiselect("📅 Select Year(s) Added", sorted(df['year_added'].dropna().unique()), default=list(df['year_added'].dropna().unique()))
+genre_filter = st.sidebar.multiselect("🎭 Select Genre(s)", sorted(set(', '.join(df['listed_in']).split(', '))), default=[])
+country_filter = st.sidebar.multiselect("🌍 Select Country(ies)", sorted(set(', '.join(df['country']).split(', '))), default=[])
 
 # Apply filters
 def apply_filters(df):
@@ -41,29 +41,37 @@ def apply_filters(df):
 
 filtered_df = apply_filters(df)
 
+# Debug Info
+st.write("Filtered DataFrame shape:", filtered_df.shape)
+
 # Tabs
 tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "🎭 Genres, Countries & People", "📈 Trends", "📝 Summary"])
 
 with tab1:
     st.header("🎬 Netflix Content Type Distribution")
-    fig, ax = plt.subplots()
-    sns.countplot(data=filtered_df, x="type", ax=ax)
-    ax.set_title("Movies vs TV Shows")
-    st.pyplot(fig)
+    if not filtered_df.empty:
+        fig, ax = plt.subplots()
+        sns.countplot(data=filtered_df, x="type", ax=ax)
+        ax.set_title("Movies vs TV Shows")
+        st.pyplot(fig)
+    else:
+        st.warning("No data to display. Try adjusting your filters.")
 
     st.subheader("🥧 Content Type Distribution (Pie Chart)")
     type_counts = filtered_df['type'].value_counts()
-    fig, ax = plt.subplots()
-    ax.pie(type_counts, labels=type_counts.index, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')
-    st.pyplot(fig)
+    if not type_counts.empty:
+        fig, ax = plt.subplots()
+        ax.pie(type_counts, labels=type_counts.index, autopct='%1.1f%%', startangle=90)
+        ax.axis('equal')
+        st.pyplot(fig)
 
     st.subheader("📅 Content Added Over Years")
-    fig, ax = plt.subplots(figsize=(10, 4))
-    sns.countplot(data=filtered_df, x="year_added", hue="type", ax=ax)
-    ax.set_title("Content Added by Year")
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
+    if not filtered_df.empty:
+        fig, ax = plt.subplots(figsize=(10, 4))
+        sns.countplot(data=filtered_df, x="year_added", hue="type", ax=ax)
+        ax.set_title("Content Added by Year")
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
 
 with tab2:
     st.header("🎭 Top Genres")
@@ -102,18 +110,20 @@ with tab3:
     st.header("⏱️ Movie Duration Distribution")
     movie_df = filtered_df[filtered_df['type'] == 'Movie'].copy()
     movie_df['duration_mins'] = movie_df['duration'].str.extract(r'(\d+)').astype(float)
-    fig, ax = plt.subplots()
-    sns.histplot(movie_df['duration_mins'].dropna(), bins=30, ax=ax)
-    ax.set_title("Movie Duration (in minutes)")
-    st.pyplot(fig)
+    if not movie_df['duration_mins'].dropna().empty:
+        fig, ax = plt.subplots()
+        sns.histplot(movie_df['duration_mins'].dropna(), bins=30, ax=ax)
+        ax.set_title("Movie Duration (in minutes)")
+        st.pyplot(fig)
 
     st.header("📺 TV Show Seasons Distribution")
     tv_df = filtered_df[filtered_df['type'] == 'TV Show'].copy()
     tv_df['seasons'] = tv_df['duration'].str.extract(r'(\d+)').astype(float)
-    fig, ax = plt.subplots()
-    sns.histplot(tv_df['seasons'].dropna(), bins=15, ax=ax)
-    ax.set_title("Number of Seasons")
-    st.pyplot(fig)
+    if not tv_df['seasons'].dropna().empty:
+        fig, ax = plt.subplots()
+        sns.histplot(tv_df['seasons'].dropna(), bins=15, ax=ax)
+        ax.set_title("Number of Seasons")
+        st.pyplot(fig)
 
 with tab4:
     st.header("📅 Gantt Chart – Project Timeline")
@@ -146,7 +156,3 @@ with tab4:
     - **👤 Prominent actors** like Anupam Kher, Om Puri frequently appear.
     - **🎬 Directors** like Raúl Campos and Marcus Raboy have directed multiple titles.
     """)
-
-# Optional development/testing logs
-print("Data loaded:", df.shape)
-print("Filtered rows:", filtered_df.shape)
