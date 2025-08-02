@@ -10,4 +10,6 @@ Explore Netflix’s movie and TV show data to uncover trends in content type, du
 ## How to Run
 1. Open terminal in this folder
 2. Run:
-   python netflix_analysis.py
+   pip install -r requirements.txt
+   streamlit run netflix_analysis.py
+
