@@ -1,27 +1,31 @@
 # 🎬 Netflix Content Analysis Dashboard
 
-[![View on Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://netflix-dashboard-y9gnuw2dyaffy5h4vxfejk.streamlit.app/)
-
-This project is a **Streamlit dashboard** for analyzing Netflix's global content catalog. It offers interactive filters and visualizations to explore trends in movies and TV shows available on the platform.
+An interactive Streamlit web app for analyzing Netflix's global content catalog using Python libraries such as Pandas, Matplotlib, Seaborn, and Plotly.
 
 ---
 
-## 📊 Features
+## 📊 Key Features
 
-- 🎛️ **Interactive Filters**:
-  - Filter Netflix titles by year added, genre, and country
-- 📈 **Visual Insights**:
-  - **Overview**: Content type distribution, yearly trends
-  - **Genres & Countries**: Top contributing genres and countries
-  - **Trends**: Duration analysis for movies and TV shows
-- 🌐 **Streamlit Cloud Deployment**: Easily accessible via browser
+- **Dynamic Filters** to explore:
+  - Year(s) Added 📅
+  - Genre(s) 🎭
+  - Country(ies) 🌍
+
+- **Multiple Visualization Tabs**:
+  - 📊 **Overview** – Content type distribution with bar and pie charts, year-wise trends
+  - 🎭 **Genres, Countries & People** – Top genres, countries, actors, and directors
+  - 📈 **Trends** – Movie duration & TV seasons histograms
+  - 📝 **Summary** – Key insights and a Gantt chart timeline using Plotly
+
+- **Netflix Logo Branding**
+- **Sidebar filtering for seamless interactivity**
+- **Deployed-ready Streamlit dashboard**
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Clone this Repository
-
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Bineet-48/netflix-dashboard.git
 cd netflix-dashboard
